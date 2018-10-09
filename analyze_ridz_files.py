@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(description='Adjust Daily RFI Report Settings.'
 
 parser.add_argument('--which_day', help='YYYYmmdd string of day you would like to analyze, default is yesterday', default = (datetime.date.today()-datetime.timedelta(1)).strftime('%Y%m%d') )
 parser.add_argument('--debug', help ='Boolean: Print a bunch of statements to help you diagnose potential problems?', default = 0)
-args = parser.parse_args()
+args = parser.parse_args() 
 
 DEBUG = bool(int(args.debug))
 STR_DAY = str(args.which_day)
