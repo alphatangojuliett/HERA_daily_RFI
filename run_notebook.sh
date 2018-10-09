@@ -24,7 +24,7 @@ set -e
 # Create a temporary Lustre directory for exporting the data and command the
 # Librarian to populate it.
 
-staging_dir=$(mktemp -d --tmpdir=/lustre/aoc/projects/hera/SDR_RFI_monitoring_staging sessid$sessid.XXXXXX)
+staging_dir=$(mktemp -d --tmpdir=/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring_staging sessid$sessid.XXXXXX)
 chmod ug+rwx "$staging_dir"
 
 remove_staging_notes () {
