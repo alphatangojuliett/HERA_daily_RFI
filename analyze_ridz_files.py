@@ -1,4 +1,4 @@
-import rids
+#import rids
 import numpy as np 
 import json
 import sys
