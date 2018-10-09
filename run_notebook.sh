@@ -62,9 +62,9 @@ done
 jd=$(basename $DATA_PATH)
 
 # get more env vars
-BASENBDIR=/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/
+BASENBDIR=/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI
 OUTPUT=daily_RFI_report_"$jd".ipynb
-OUTPUTDIR=/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/
+OUTPUTDIR=/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI
 
 # copy and run notebook
 echo "starting notebook execution..."
