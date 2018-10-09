@@ -102,7 +102,10 @@ env = dict(os.environ)
 env['sessid'] = str(STR_DAY)
 plots_dir = os.getcwd()
 plot_script = os.path.join(plots_dir, 'run_notebook.sh')
-subprocess.check_call([plot_script],shell = False, env = env)
+subprocess.check_call(['/opt/services/torque/bin/qsub', '-z', '-j', 'oe', '-o', '/lustre/aoc/projects/hera/ajosaiti/qsub.log', '-V', '-q', 'hera', plot_script],
+	shell = False,
+	env = env
+	)
 
 if DEBUG: 
 	print('arr_day: '+str(arr_day))
