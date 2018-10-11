@@ -20,8 +20,8 @@ STR_DAY = str(args.which_day)
 
 OUT_DAY = 'arr_day.npy' #the output files containing integrated power and metadata for each sweep-spectrum on record
 OUT_NIGHT = 'arr_night.npy'
-#DATA_PATH = /Users/josaitis/Library/Mobile Documents/com~apple~CloudDocs/Cambridge/HERA/RFI_monitoring/HERA_daily_RFI/ #Temporary, while I work on local computer. For actual github instantion, use: data_path = os.environ['DATA_PATH']
-SUNSET_TIMETABLE = np.genfromtxt('HERA_sunrise_sunset_annual.csv', dtype=str,delimiter=',') # Col 0: Month-day (mmdd), Col 1: Sunrise (hhmm), Col 2: Sunset (hhmm)
+DATA_PATH = os.environ['DATA_PATH']
+SUNSET_TIMETABLE = np.genfromtxt('/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI/HERA_sunrise_sunset_annual.csv', dtype=str,delimiter=',') # Col 0: Month-day (mmdd), Col 1: Sunrise (hhmm), Col 2: Sunset (hhmm)
 
 
 def file_flush():
@@ -100,9 +100,13 @@ np.save(OUT_NIGHT,arr_night)
 ## Prepare environment for ipynb notebook executable
 env = dict(os.environ)
 env['sessid'] = str(STR_DAY)
-plots_dir = os.getcwd()
+plots_dir = os.path.dirname('/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI/')
 plot_script = os.path.join(plots_dir, 'run_notebook.sh')
-subprocess.check_call([plot_script],shell = False, env = env)
+
+subprocess.check_call(['/opt/services/torque/bin/qsub', '-z', '-j', 'oe', '-o', '/lustre/aoc/projects/hera/ajosaiti/qsub.log', '-V', '-q', 'hera', plot_script],
+	shell = False,
+	env = env
+	)
 
 if DEBUG: 
 	print('arr_day: '+str(arr_day))
