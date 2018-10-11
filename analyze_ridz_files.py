@@ -102,7 +102,10 @@ env = dict(os.environ)
 env['sessid'] = str(STR_DAY)
 plots_dir = os.path.dirname('/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI/')
 plot_script = os.path.join(plots_dir, 'run_notebook.sh')
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7538c3866f47b5d4727a06f0c4f2fb05478ee85a
 subprocess.check_call(['/opt/services/torque/bin/qsub', '-z', '-j', 'oe', '-o', '/lustre/aoc/projects/hera/ajosaiti/qsub.log', '-V', '-q', 'hera', plot_script],
 	shell = False,
 	env = env
