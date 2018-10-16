@@ -1,6 +1,6 @@
 #!/bin/bash
 
-librarian_conn_name=local
+librarian_conn_name=local-human
 
 echo Date: $(date)
 echo sessid=$sessid
@@ -59,7 +59,7 @@ for item in "$staging_dir"/2* ; do
     export DATA_PATH="$item"
 done
 
-jd=$(basename $DATA_PATH)
+jd=$(basename $sessid)  #Trying this... #$(basename $DATA_PATH)
 
 # get more env vars
 BASENBDIR=/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI
@@ -91,7 +91,7 @@ git add $OUTPUTDIR/processed_sessid.txt
 # commit and push
 git commit -m "data inspect notebook for $jd"
 git pull
-git push
+git push origin herapost-master
 
 # mark these files as processed (see cronjob.py). We only need to mark one
 # file but we do all of the UV files since that seems like potentially handy
@@ -103,9 +103,9 @@ for uv in $staging_dir/*/*.uv ; do
     add_librarian_file_event.py $librarian_conn_name $uv rfi_data.processed when=$now_unix
 done
 
-echo "sending email to heraops"
-sed -e 's/@@JD@@/'$jd'/g' < mail_template.txt > mail.txt
-sendmail -vt < mail.txt
+#echo "sending email to heraops"
+#sed -e 's/@@JD@@/'$jd'/g' < mail_template.txt > mail.txt
+#sendmail -vt < mail.txt
 
 echo "removing staging dir"
 rm -rf "$staging_dir"

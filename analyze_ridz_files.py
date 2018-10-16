@@ -24,6 +24,7 @@ DATA_PATH = os.environ['DATA_PATH']
 SUNSET_TIMETABLE = np.genfromtxt('/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI/HERA_sunrise_sunset_annual.csv', dtype=str,delimiter=',') # Col 0: Month-day (mmdd), Col 1: Sunrise (hhmm), Col 2: Sunset (hhmm)
 
 
+
 def file_flush():
 	if DEBUG: print('flushing temporary and output files...')
 	open(OUT_DAY, 'w').close()
@@ -97,15 +98,35 @@ arr_night = np.array(arr_night)
 np.save(OUT_DAY,arr_day)
 np.save(OUT_NIGHT,arr_night)
 
+#
+search = '''
+{
+	"name-matches": "SDR_SpectrumPeak.{$sessid}.%
+}
+'''
+SDR_SpectrumPeak.
+sessions = cl.search_sessions(search)['results']
+
+
 ## Prepare environment for ipynb notebook executable
-env = dict(os.environ)
-env['sessid'] = str(STR_DAY)
+#env = dict(os.environ) THis line and next are for when I'm not using librarian to copy files to lustre
+#env['sessid'] = str(STR_DAY)
 plots_dir = os.path.dirname('/lustre/aoc/projects/hera/ajosaiti/SDR_RFI_monitoring/HERA_daily_RFI/')
 plot_script = os.path.join(plots_dir, 'run_notebook.sh')
-<<<<<<< HEAD
 
-=======
->>>>>>> 7538c3866f47b5d4727a06f0c4f2fb05478ee85a
+ # check these sessid aren't in the processed_sessid.txt file
+processed_sessid = np.loadtxt(os.path.join(plots_dir, 'processed_sessid.txt'), dtype=np.int)
+ # filter out sessions already processed
+unprocessed_sessions = []
+for sess in sessions:
+	if sess['id'] not in processed_sessid:
+		unprocessed_sessions.append(sess)
+# Just pick one to process and submit the job that will
+# actually crunch it.
+sessid = unprocessed_sessions[0]['id']
+env = dict(os.environ)
+env['sessid'] = str(sessid)
+
 subprocess.check_call(['/opt/services/torque/bin/qsub', '-z', '-j', 'oe', '-o', '/lustre/aoc/projects/hera/ajosaiti/qsub.log', '-V', '-q', 'hera', plot_script],
 	shell = False,
 	env = env
